@@ -302,3 +302,7 @@ listening on veth1, link-type EN10MB (Ethernet), capture size 262144 bytes
 1 packet dropped by kernel
 ```
 So - you get odd numbered ICMP requests through veth1, and even numbered requests through veth0. And the reverse is true for the other pair. So, tc is balancing traffic per packet, outputting each packet on an interface, allowing you to achive double bandwidth.
+
+## Applying it in real life
+
+I've been using network namespaces and virtual interfaces to experiment. For a real setup, devicea and deviceb become two different systems, veth0 - veth3 are physical interfaces of the respective system and the commands change a bit. You can skip `ip netns exec deviceX` entirely (this cause the command tha follows to be executed in the same context as the `deviceX` network namespace). You can also ignore the `-n deviceX` parameter of the ip commands above. That should run everything in the same namespace. Also, shaping is no longer necessary.
